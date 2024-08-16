@@ -11,10 +11,6 @@ def team_info_by_email(email):
 
 
 # verify if the requester is a valid user
-approver = get_user()
-if not approver.email.endswith('@example.com'):
-    display("Unauthorized access. Please enter a valid @example.com email or contact admin@example.com.")
-
 assignee_emails = get_data("assignee_emails")
 data = get_data(
     "purchase_data")

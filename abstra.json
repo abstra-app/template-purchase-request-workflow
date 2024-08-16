@@ -13,14 +13,18 @@
   },
   "kanban": {
     "access_control": {
-      "is_public": true,
-      "required_roles": []
+      "is_public": false,
+      "required_roles": [
+        "admin"
+      ]
     }
   },
   "home": {
     "access_control": {
-      "is_public": true,
-      "required_roles": []
+      "is_public": false,
+      "required_roles": [
+        "admin"
+      ]
     }
   },
   "jobs": [],
@@ -59,8 +63,10 @@
         "enabled": false
       },
       "access_control": {
-        "is_public": true,
-        "required_roles": []
+        "is_public": false,
+        "required_roles": [
+          "admin"
+        ]
       }
     },
     {
@@ -70,12 +76,12 @@
       "is_initial": false,
       "auto_start": false,
       "allow_restart": false,
-      "end_message": "Obrigado",
+      "end_message": "Thank You",
       "start_message": "",
       "error_message": null,
-      "welcome_title": "Aprova\u00e7\u00e3o de Solicita\u00e7\u00e3o de Compra",
+      "welcome_title": "Approval Purchase Request",
       "timeout_message": null,
-      "start_button_text": "Iniciar",
+      "start_button_text": "Start",
       "restart_button_text": null,
       "file": "approval_purchase_request.py",
       "workflow_position": [
@@ -96,8 +102,10 @@
         "enabled": true
       },
       "access_control": {
-        "is_public": true,
-        "required_roles": []
+        "is_public": false,
+        "required_roles": [
+          "admin"
+        ]
       }
     }
   ],

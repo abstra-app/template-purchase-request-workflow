@@ -18,9 +18,6 @@ def team_info_by_email(email):
 set_title("Purchase Request")
 user = get_user()
 requester_email = user.email
-if not requester_email.endswith('@example.com'):
-    display("Unauthorized access. Please enter a valid @example.com email or contact admin@example.com.", end_program=True)
-    exit()
 
 # builds the purchase request page
 purchase_request = Page().display("Purchase Request", size="large")\
