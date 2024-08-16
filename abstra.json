@@ -1,0 +1,226 @@
+{
+  "workspace": {
+    "id": null,
+    "name": "Untitled Workspace",
+    "theme": null,
+    "logo_url": null,
+    "favicon_url": null,
+    "brand_name": null,
+    "main_color": null,
+    "font_color": null,
+    "font_family": null,
+    "language": "en"
+  },
+  "kanban": {
+    "access_control": {
+      "is_public": true,
+      "required_roles": []
+    }
+  },
+  "home": {
+    "access_control": {
+      "is_public": true,
+      "required_roles": []
+    }
+  },
+  "jobs": [],
+  "hooks": [],
+  "forms": [
+    {
+      "id": "da347028-9b88-4300-9a22-bbf7bdbd6983",
+      "path": "purchase-request",
+      "title": "Purchase Request",
+      "is_initial": true,
+      "auto_start": false,
+      "allow_restart": false,
+      "end_message": "Thank you",
+      "start_message": null,
+      "error_message": null,
+      "welcome_title": "Purchase Request",
+      "timeout_message": null,
+      "start_button_text": "Start",
+      "restart_button_text": null,
+      "file": "purchase_request.py",
+      "workflow_position": [
+        -192.0,
+        -180.0
+      ],
+      "transitions": [
+        {
+          "target_id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
+          "target_type": "conditions",
+          "type": "forms:finished",
+          "id": "po5bavy",
+          "condition_value": null
+        }
+      ],
+      "notification_trigger": {
+        "variable_name": "assignee_emails",
+        "enabled": false
+      },
+      "access_control": {
+        "is_public": true,
+        "required_roles": []
+      }
+    },
+    {
+      "id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
+      "path": "approval-purchase-request",
+      "title": "Approval Purchase Request",
+      "is_initial": false,
+      "auto_start": false,
+      "allow_restart": false,
+      "end_message": "Obrigado",
+      "start_message": "",
+      "error_message": null,
+      "welcome_title": "Aprova\u00e7\u00e3o de Solicita\u00e7\u00e3o de Compra",
+      "timeout_message": null,
+      "start_button_text": "Iniciar",
+      "restart_button_text": null,
+      "file": "approval_purchase_request.py",
+      "workflow_position": [
+        804.0,
+        -180.0
+      ],
+      "transitions": [
+        {
+          "target_id": "43030cad-d208-4559-9aef-aad797284c5d",
+          "target_type": "scripts",
+          "type": "forms:finished",
+          "id": "i0sd3n8",
+          "condition_value": null
+        }
+      ],
+      "notification_trigger": {
+        "variable_name": "item",
+        "enabled": true
+      },
+      "access_control": {
+        "is_public": true,
+        "required_roles": []
+      }
+    }
+  ],
+  "scripts": [
+    {
+      "id": "43030cad-d208-4559-9aef-aad797284c5d",
+      "file": "collect_approval_status.py",
+      "title": "Collect Approval Status",
+      "is_initial": false,
+      "workflow_position": [
+        804.0,
+        -72.0
+      ],
+      "transitions": [
+        {
+          "target_id": "da57f30b-9f54-4d90-9494-f07697080758",
+          "target_type": "conditions",
+          "type": "scripts:finished",
+          "id": "6gjsx7x",
+          "condition_value": null
+        }
+      ]
+    },
+    {
+      "id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
+      "file": "purchase_request_rejection_notification.py",
+      "title": "Purchase Request Rejection Notification",
+      "is_initial": false,
+      "workflow_position": [
+        804.0,
+        168.0
+      ],
+      "transitions": []
+    },
+    {
+      "id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
+      "file": "send_purchase_approved.py",
+      "title": "Send Purchase Approved",
+      "is_initial": false,
+      "workflow_position": [
+        192.0,
+        36.0
+      ],
+      "transitions": []
+    }
+  ],
+  "iterators": [
+    {
+      "id": "b4398762-4660-4936-973d-23c04b8bd3c9",
+      "title": "assignee_emails",
+      "variable_name": "assignee_emails",
+      "workflow_position": [
+        492.0,
+        -360.0
+      ],
+      "transitions": [
+        {
+          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
+          "target_type": "forms",
+          "type": "iterators:each",
+          "id": "5rvgrt7",
+          "condition_value": null
+        }
+      ],
+      "item_name": "item"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
+      "variable_name": "purchase_request_status",
+      "workflow_position": [
+        192.0,
+        -180.0
+      ],
+      "transitions": [
+        {
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
+          "target_type": "scripts",
+          "type": "conditions:patternMatched",
+          "id": "j3mdxlx",
+          "condition_value": "approved"
+        },
+        {
+          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
+          "target_type": "forms",
+          "type": "conditions:patternMatched",
+          "id": "tpcrneq",
+          "condition_value": "pending_finance"
+        },
+        {
+          "target_id": "b4398762-4660-4936-973d-23c04b8bd3c9",
+          "target_type": "iterators",
+          "type": "conditions:patternMatched",
+          "id": "6ig9ljg",
+          "condition_value": "pending_manager"
+        }
+      ]
+    },
+    {
+      "id": "da57f30b-9f54-4d90-9494-f07697080758",
+      "variable_name": "approval_status",
+      "workflow_position": [
+        804.0,
+        36.0
+      ],
+      "transitions": [
+        {
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
+          "target_type": "scripts",
+          "type": "conditions:patternMatched",
+          "id": "kfjf0at",
+          "condition_value": "approved"
+        },
+        {
+          "target_id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
+          "target_type": "scripts",
+          "type": "conditions:patternMatched",
+          "id": "d0zqwyc",
+          "condition_value": "rejected"
+        }
+      ]
+    }
+  ],
+  "version": "11.0"
+}
