@@ -8,7 +8,7 @@ This functional template includes the following steps:
 - Depending on the value, the request is either automatically approved or sent via email to the responsible team for approval.
 - Finally, an overview of the order is sent on Slack to the requester, informing them about the status.
 
-![A purchase request approval/rejection worklow built in Abstra](https://github.com/user-attachments/assets/e232be81-a88b-40dd-9cd9-6f16e597e5e2)
+![A purchase request approval/rejection worklow built in Abstra](https://github.com/user-attachments/assets/979e1ecb-4a64-49ce-8105-8899303cb85e)
 
 This template integrates with Slack. To make these integrations work, you must add your own API Keys for these services.
 
