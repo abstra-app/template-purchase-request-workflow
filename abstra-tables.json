@@ -1,0 +1,198 @@
+{
+  "tables": [
+    {
+      "id": "d236b9c7-4453-4780-98c1-16a33393f42c",
+      "name": "payables",
+      "columns": [
+        {
+          "id": "42bc1f0c-6865-4804-8d46-3b9ec59b0dee",
+          "name": "id",
+          "type": "uuid",
+          "nullable": false,
+          "unique": true,
+          "primaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "id": "9ec30589-e583-413b-b1b0-6dcc102813da",
+          "name": "created_at",
+          "type": "timestamp",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "now()"
+        },
+        {
+          "id": "440f4058-e75d-4ac3-84ff-f4cebc6d6c66",
+          "name": "updated_at",
+          "type": "timestamp",
+          "nullable": true,
+          "unique": false,
+          "primaryKey": false,
+          "default": "now()"
+        },
+        {
+          "id": "4679dfa0-66f7-4aa9-b1ad-f4eb66ddc138",
+          "name": "description",
+          "type": "varchar",
+          "nullable": true,
+          "unique": false,
+          "primaryKey": false
+        },
+        {
+          "id": "9db6da90-dd6d-4d85-8b5d-4b335491d551",
+          "name": "amount",
+          "type": "int4",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "0"
+        },
+        {
+          "id": "b79e2f1e-5efb-4c21-a91e-9073a5315412",
+          "name": "purchase_request_id",
+          "type": "uuid",
+          "nullable": true,
+          "unique": false,
+          "primaryKey": false,
+          "default": "gen_random_uuid()",
+          "foreignKey": {
+            "columnId": "c9a3233d-7a25-4d96-8eca-c77ae54350b1"
+          }
+        }
+      ],
+      "data": []
+    },
+    {
+      "id": "02253aed-ab25-42ad-94ee-0597a4d1b0ac",
+      "name": "purchase_request_approvals",
+      "columns": [
+        {
+          "id": "91602552-3a35-4f6a-91ac-3ec62b2df3e1",
+          "name": "id",
+          "type": "uuid",
+          "nullable": false,
+          "unique": true,
+          "primaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "id": "9cbd83ff-2dd4-4654-b728-9805a1d2b8fb",
+          "name": "created_at",
+          "type": "timestamp",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "now()"
+        },
+        {
+          "id": "eb0ee4d0-f3f2-488d-b771-0700c5f452e9",
+          "name": "approved",
+          "type": "bool",
+          "nullable": true,
+          "unique": false,
+          "primaryKey": false
+        },
+        {
+          "id": "6061f908-2914-487d-9d46-0403fc43b4c8",
+          "name": "purchase_request_id",
+          "type": "uuid",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "gen_random_uuid()",
+          "foreignKey": {
+            "columnId": "c9a3233d-7a25-4d96-8eca-c77ae54350b1"
+          }
+        },
+        {
+          "id": "c2dad091-54d5-46ea-8ffa-8681f1d43cb3",
+          "name": "team_id",
+          "type": "uuid",
+          "nullable": true,
+          "unique": false,
+          "primaryKey": false,
+          "default": "gen_random_uuid()",
+          "foreignKey": {
+            "columnId": "dba98df0-880d-4f91-b637-a7654b482318"
+          }
+        }
+      ],
+      "data": []
+    },
+    {
+      "id": "85627780-74d3-4d4d-b161-2327a7d430f6",
+      "name": "purchase_requests",
+      "columns": [
+        {
+          "id": "c9a3233d-7a25-4d96-8eca-c77ae54350b1",
+          "name": "id",
+          "type": "uuid",
+          "nullable": false,
+          "unique": true,
+          "primaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "id": "c7d4fe5b-a7e2-40b9-af92-34e767184d56",
+          "name": "created_at",
+          "type": "timestamp",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "now()"
+        }
+      ],
+      "data": []
+    },
+    {
+      "id": "134792ac-c228-4cda-85cb-243206cb9be2",
+      "name": "team",
+      "columns": [
+        {
+          "id": "dba98df0-880d-4f91-b637-a7654b482318",
+          "name": "id",
+          "type": "uuid",
+          "nullable": false,
+          "unique": true,
+          "primaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "id": "408aa08a-4512-4b64-bbb2-b713b9483b6d",
+          "name": "created_at",
+          "type": "timestamp",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false,
+          "default": "now()"
+        },
+        {
+          "id": "715c1755-99fe-4f7a-b101-ab6c94e31f0d",
+          "name": "name",
+          "type": "varchar",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false
+        },
+        {
+          "id": "d8357c78-044c-446f-afff-8c7a781ec18c",
+          "name": "company_email",
+          "type": "varchar",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false
+        },
+        {
+          "id": "5e48cba8-6159-4358-98d2-a05c949cfa62",
+          "name": "position",
+          "type": "varchar",
+          "nullable": false,
+          "unique": false,
+          "primaryKey": false
+        }
+      ],
+      "data": []
+    }
+  ]
+}
