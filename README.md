@@ -23,7 +23,7 @@ To use this project, some initial configurations are necessary:
     - `FINANCE_TEAM_EMAIL`: Email of the team responsible for purchase approval
     - `MANAGER_EMAIL`: Email of the manager responsible for purchase approval if the value is too high
   
-     For local development, create a `.env` file at the root of the project and add the variables listed above (as in `.env.examples`). For online deployment, configure these variables in your 
+     For local development, create a `.env` file at the root of the project and add the variables listed above (as in `.env.example`). For online deployment, configure these variables in your 
      [environment settings](https://docs.abstra.io/cloud/envvars).
 
 5. **Dependencies**: To install the necessary dependencies for this project, a `requirements.txt` file is provided. This file includes all the required libraries.
