@@ -3,8 +3,9 @@ from abstra.tables import *
 from abstra.connectors import get_access_token
 import slack_sdk as slack
 from slack_sdk.errors import SlackApiError
+import os
 
-slack_token = get_access_token("slack").token
+slack_token = os.getenv("SLACK_BOT_TOKEN")
 
 purchase_data = get_data("purchase_data")
 requester_team_email = purchase_data["requester_intern_email"]
