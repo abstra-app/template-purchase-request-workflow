@@ -1,3 +1,3 @@
-abstra==2.25.4
+abstra==3.11.1
 slack_sdk==3.27.2
 python-dotenv==1.0.1
