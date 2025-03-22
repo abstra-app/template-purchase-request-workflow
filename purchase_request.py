@@ -1,17 +1,5 @@
-from abstra.compat import use_legacy_threads
-"""
-Calling the use_legacy_threads function allows using
-the legacy threads in versions > 3.0.0
-https://abstra.io/docs/guides/use-legacy-threads/
-
-The new way of using workflows is with tasks. Learn more
-at https://abstra.io/docs/concepts/tasks/ and contact us
-on any issues during your migration
-"""
-use_legacy_threads("forms")
-
 from abstra.forms import *
-from abstra.workflows import *
+from abstra.tasks import *
 from abstra.tables import *
 import os
 
@@ -33,7 +21,6 @@ def team_info_by_email(email):
 
 
 # verify if the requester is a valid user
-set_title("Purchase Request")
 user = get_user()
 requester_email = user.email
 
@@ -46,7 +33,14 @@ purchase_request = Page().display("Purchase Request", size="large")\
                          .read_textarea("Reason for Purchase", key="reason")\
                          .run("Send Request")
 
-description, amount, quantity, deadline, reason = purchase_request.values()
+
+# Accessing values from the Page result
+description = purchase_request["description"]
+amount = purchase_request["amount"]
+quantity = purchase_request["quantity"]
+deadline = purchase_request["deadline"]
+reason = purchase_request["reason"]
+
 
 team_info = team_info_by_email(requester_email)
 requester_team_id, requester_team_name, requester_team_position = team_info[
@@ -76,11 +70,28 @@ for approval_email in assignee_emails:
     approvals.append(purchase_request_approval)
 
 
-purchase_data = {"description": description, "amount": amount, "quantity": quantity,
-                 "reason": reason, "deadline": deadline.isoformat(), "requester_intern_email": requester_email,
-                 "requester_team_name": requester_team_name, "requester_team_id": requester_team_id,
-                 "requester_team_position": requester_team_position, "purchase_request_id": purchase_request_id}
+purchase_data = {
+            "description": description,
+            "amount": amount,
+            "quantity": quantity,
+            "reason": reason,
+            "deadline": deadline.isoformat(),
+            "requester_intern_email": requester_email,
+            "requester_team_name": requester_team_name,
+            "requester_team_id": requester_team_id,
+            "requester_team_position": requester_team_position,
+            "purchase_request_id": purchase_request_id
+    }
 
-set_data("purchase_request_status", purchase_request_status)
-set_data("assignee_emails", assignee_emails)
-set_data("purchase_data", purchase_data)
+purchase_request_status = {
+    "status": purchase_request_status,
+}
+
+assignee_emails = {
+    "emails": assignee_emails,
+}
+
+send_task("purchase_request_status", purchase_request_status)
+send_task("assignee_emails", assignee_emails)
+send_task("purchase_data", purchase_data)
+
