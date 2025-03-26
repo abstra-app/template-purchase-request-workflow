@@ -1,16 +1,4 @@
-from abstra.compat import use_legacy_threads
-"""
-Calling the use_legacy_threads function allows using
-the legacy threads in versions > 3.0.0
-https://abstra.io/docs/guides/use-legacy-threads/
-
-The new way of using workflows is with tasks. Learn more
-at https://abstra.io/docs/concepts/tasks/ and contact us
-on any issues during your migration
-"""
-use_legacy_threads("scripts")
-
-from abstra.workflows import *
+from abstra.tasks import *
 from abstra.tables import *
 from abstra.connectors import get_access_token
 import slack_sdk as slack
@@ -19,11 +7,14 @@ import os
 
 slack_token = get_access_token("slack").token
 
-purchase_data = get_data("purchase_data")
+
+task = get_trigger_task()
+payload = task.get_payload()
+purchase_data = payload["purchase_data"]
 requester_team_email = purchase_data["requester_intern_email"]
 
-reject_message = get_data("rejection_reason")
-assignee_emails = get_data("assignee_emails")
+reject_message = payload["rejection_reason"]
+assignee_emails = payload["assignee_emails"]
 
 
 def slack_msg(message, channel, token):
