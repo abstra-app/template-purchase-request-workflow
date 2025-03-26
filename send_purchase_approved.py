@@ -1,16 +1,4 @@
-from abstra.compat import use_legacy_threads
-"""
-Calling the use_legacy_threads function allows using
-the legacy threads in versions > 3.0.0
-https://abstra.io/docs/guides/use-legacy-threads/
-
-The new way of using workflows is with tasks. Learn more
-at https://abstra.io/docs/concepts/tasks/ and contact us
-on any issues during your migration
-"""
-use_legacy_threads("scripts")
-
-from abstra.workflows import *
+from abstra.tasks import *
 from abstra.tables import *
 from abstra.connectors import get_access_token
 import os
@@ -19,7 +7,10 @@ from slack_sdk.errors import SlackApiError
 
 slack_token = get_access_token("slack").token
 
-purchase_data = get_data("purchase_data")
+task = get_trigger_task()
+payload = task.get_payload()
+purchase_data = payload["purchase_data"]
+
 requester_team_email = purchase_data["requester_intern_email"]
 purchase_request_id = purchase_data["purchase_request_id"]
 requester_team_id = purchase_data["requester_team_id"]
@@ -56,9 +47,15 @@ message = f"Great news!\nYour purchase request for '{description}' has been appr
 slack_msg(message, user_id, slack_token)
 
 # add on payables
-amount = 100*purchase_data["amount"]
-insert("payables", {"purchase_request_id": purchase_request_id,
-                    "amount": amount, "description": purchase_data["description"]})
+amount = 100*amount
+insert(
+    "payables", 
+    {
+        "purchase_request_id": purchase_request_id,
+        "amount": amount,
+        "description": purchase_data["description"]
+    }
+)
 
 # notify the finance team on slack
 channel = os.getenv("SLACK_CHANNEL_NAME")
