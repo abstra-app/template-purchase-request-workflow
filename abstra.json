@@ -37,16 +37,23 @@
       "restart_button_text": null,
       "file": "purchase_request.py",
       "workflow_position": [
-        -195.0,
+        225.0,
         -180.0
       ],
       "transitions": [
         {
-          "target_id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
           "target_type": "scripts",
           "type": "task",
-          "id": "po5bavy",
-          "task_type": "success"
+          "id": "hlxo6nw",
+          "task_type": "approved"
+        },
+        {
+          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
+          "target_type": "forms",
+          "type": "task",
+          "id": "41b3ap3",
+          "task_type": "pending"
         }
       ],
       "notification_trigger": {
@@ -76,7 +83,7 @@
       "restart_button_text": null,
       "file": "approval_purchase_request.py",
       "workflow_position": [
-        804.0,
+        810.0,
         -180.0
       ],
       "transitions": [
@@ -85,7 +92,7 @@
           "target_type": "scripts",
           "type": "task",
           "id": "i0sd3n8",
-          "task_type": "success"
+          "task_type": "approval_status"
         }
       ],
       "notification_trigger": {
@@ -107,16 +114,23 @@
       "title": "Collect Approval Status",
       "is_initial": false,
       "workflow_position": [
-        804.0,
-        -72.0
+        825.0,
+        30.0
       ],
       "transitions": [
         {
-          "target_id": "da57f30b-9f54-4d90-9494-f07697080758",
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
           "target_type": "scripts",
           "type": "task",
-          "id": "6gjsx7x",
-          "task_type": "success"
+          "id": "c6yokp5",
+          "task_type": "approved"
+        },
+        {
+          "target_id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
+          "target_type": "scripts",
+          "type": "task",
+          "id": "k9kxrnc",
+          "task_type": "rejected"
         }
       ]
     },
@@ -126,8 +140,8 @@
       "title": "Purchase Request Rejection Notification",
       "is_initial": false,
       "workflow_position": [
-        804.0,
-        168.0
+        795.0,
+        165.0
       ],
       "transitions": []
     },
@@ -137,88 +151,10 @@
       "title": "Send Purchase Approved",
       "is_initial": false,
       "workflow_position": [
-        192.0,
-        36.0
+        210.0,
+        30.0
       ],
       "transitions": []
-    },
-    {
-      "id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
-      "file": "condition_a3fc5f92.py",
-      "title": "Condition on purchase_request_status",
-      "is_initial": false,
-      "workflow_position": [
-        192.0,
-        -180.0
-      ],
-      "transitions": [
-        {
-          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
-          "target_type": "scripts",
-          "type": "task",
-          "id": "j3mdxlx",
-          "task_type": "approved"
-        },
-        {
-          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
-          "target_type": "forms",
-          "type": "task",
-          "id": "tpcrneq",
-          "task_type": "pending_finance"
-        },
-        {
-          "target_id": "b4398762-4660-4936-973d-23c04b8bd3c9",
-          "target_type": "scripts",
-          "type": "task",
-          "id": "6ig9ljg",
-          "task_type": "pending_manager"
-        }
-      ]
-    },
-    {
-      "id": "da57f30b-9f54-4d90-9494-f07697080758",
-      "file": "condition_da57f30b.py",
-      "title": "Condition on approval_status",
-      "is_initial": false,
-      "workflow_position": [
-        804.0,
-        36.0
-      ],
-      "transitions": [
-        {
-          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
-          "target_type": "scripts",
-          "type": "task",
-          "id": "kfjf0at",
-          "task_type": "approved"
-        },
-        {
-          "target_id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
-          "target_type": "scripts",
-          "type": "task",
-          "id": "d0zqwyc",
-          "task_type": "rejected"
-        }
-      ]
-    },
-    {
-      "id": "b4398762-4660-4936-973d-23c04b8bd3c9",
-      "file": "iterator_b4398762.py",
-      "title": "for item in assignee_emails",
-      "is_initial": false,
-      "workflow_position": [
-        492.0,
-        -360.0
-      ],
-      "transitions": [
-        {
-          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
-          "target_type": "forms",
-          "type": "task",
-          "id": "5rvgrt7",
-          "task_type": "success"
-        }
-      ]
     }
   ],
   "agents": [],
