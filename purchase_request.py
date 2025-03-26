@@ -43,8 +43,9 @@ reason = purchase_request["reason"]
 
 
 team_info = team_info_by_email(requester_email)
-requester_team_id, requester_team_name, requester_team_position = team_info[
-    "id"], team_info["name"], team_info["position"]
+requester_team_id = team_info["id"]
+requester_team_name = team_info["name"]
+requester_team_position = team_info["position"]
 
 total_amount = amount * quantity
 
@@ -65,7 +66,10 @@ approvals = []
 for approval_email in assignee_emails:
     team_approver_id = team_info_by_email(approval_email)["id"]
     purchase_request_approval = insert("purchase_request_approvals", {
-        "purchase_request_id": purchase_request_id, "team_id": team_approver_id})
+                                                "purchase_request_id": purchase_request_id,
+                                                "team_id": team_approver_id,
+                                                "approved": True if purchase_request_status == "approved" else None
+                                            })
     purchase_request_approval["email"] = approval_email
     approvals.append(purchase_request_approval)
 
@@ -81,17 +85,25 @@ purchase_data = {
             "requester_team_id": requester_team_id,
             "requester_team_position": requester_team_position,
             "purchase_request_id": purchase_request_id
-    }
-
-purchase_request_status = {
-    "status": purchase_request_status,
 }
 
-assignee_emails = {
-    "emails": assignee_emails,
+payload = {
+    "purchase_request_status": purchase_request_status,
+    "assignee_emails": assignee_emails,
+    "purchase_data": purchase_data,
 }
 
-send_task("purchase_request_status", purchase_request_status)
-send_task("assignee_emails", assignee_emails)
-send_task("purchase_data", purchase_data)
+condition_values = "approved,pending_finance,pending_manager".split(",")
+condition = payload.get("purchase_request_status", None)
+
+
+for condition_value in condition_values:
+    if condition is not None and condition == condition_value:
+        if condition == "pending_finance" or condition == "pending_manager":
+            send_task("pending", payload)
+        else:
+            send_task("approved", payload)
+
+
+
 
