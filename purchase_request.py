@@ -7,8 +7,6 @@ finance_email = os.getenv("FINANCE_TEAM_EMAIL")
 manager_email = os.getenv("MANAGER_EMAIL")
 
 # gets the email owner information on the tables team
-
-
 def team_info_by_email(email):
 
     stm = select_one("team", where={"company_email": email})
@@ -99,11 +97,9 @@ condition = payload.get("purchase_request_status", None)
 
 for condition_value in condition_values:
     if condition is not None and condition == condition_value:
-        if condition == "pending_finance" or condition == "pending_manager":
+        if condition == "pending_finance":
+            send_task("pending", payload)
+        elif condition == "pending_manager":
             send_task("pending", payload)
         else:
             send_task("approved", payload)
-
-
-
-

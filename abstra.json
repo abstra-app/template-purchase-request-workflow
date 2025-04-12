@@ -96,7 +96,7 @@
         }
       ],
       "notification_trigger": {
-        "variable_name": "item",
+        "variable_name": "assignee_emails",
         "enabled": true
       },
       "access_control": {
