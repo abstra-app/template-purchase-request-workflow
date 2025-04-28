@@ -8,7 +8,8 @@ Integrations:
 
 To customize this template for your team and build a lot more, [book a demonstration here.](https://meet.abstra.app/demo?url=purchase-request-workflow-template)
 
-![A purchase request approval/rejection worklow built in Abstra](https://github.com/user-attachments/assets/979e1ecb-4a64-49ce-8105-8899303cb85e)
+![A purchase request approval/rejection worklow built in Abstra](https://github.com/user-attachments/assets/9cb2b555-bb9a-479a-b9e1-257732a63759)
+
 
 ## Initial Configuration
 To use this project, some initial configurations are necessary:
