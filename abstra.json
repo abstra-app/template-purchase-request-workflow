@@ -1,23 +1,14 @@
 {
   "workspace": {
-    "id": null,
     "name": "Untitled Workspace",
+    "language": "en",
     "theme": null,
     "logo_url": null,
     "favicon_url": null,
-    "brand_name": null,
+    "brand_name": "",
     "main_color": "#FF60F6",
-    "font_color": null,
     "font_family": null,
-    "language": "en"
-  },
-  "kanban": {
-    "access_control": {
-      "is_public": false,
-      "required_roles": [
-        "admin"
-      ]
-    }
+    "font_color": null
   },
   "home": {
     "access_control": {
@@ -46,16 +37,23 @@
       "restart_button_text": null,
       "file": "purchase_request.py",
       "workflow_position": [
-        -192.0,
+        225.0,
         -180.0
       ],
       "transitions": [
         {
-          "target_id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
-          "target_type": "conditions",
-          "type": "forms:finished",
-          "id": "po5bavy",
-          "condition_value": null
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
+          "target_type": "scripts",
+          "type": "task",
+          "id": "hlxo6nw",
+          "task_type": "approved"
+        },
+        {
+          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
+          "target_type": "forms",
+          "type": "task",
+          "id": "41b3ap3",
+          "task_type": "pending"
         }
       ],
       "notification_trigger": {
@@ -85,20 +83,20 @@
       "restart_button_text": null,
       "file": "approval_purchase_request.py",
       "workflow_position": [
-        804.0,
+        810.0,
         -180.0
       ],
       "transitions": [
         {
           "target_id": "43030cad-d208-4559-9aef-aad797284c5d",
           "target_type": "scripts",
-          "type": "forms:finished",
+          "type": "task",
           "id": "i0sd3n8",
-          "condition_value": null
+          "task_type": "approval_status"
         }
       ],
       "notification_trigger": {
-        "variable_name": "item",
+        "variable_name": "assignee_emails",
         "enabled": true
       },
       "access_control": {
@@ -116,16 +114,23 @@
       "title": "Collect Approval Status",
       "is_initial": false,
       "workflow_position": [
-        804.0,
-        -72.0
+        825.0,
+        30.0
       ],
       "transitions": [
         {
-          "target_id": "da57f30b-9f54-4d90-9494-f07697080758",
-          "target_type": "conditions",
-          "type": "scripts:finished",
-          "id": "6gjsx7x",
-          "condition_value": null
+          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
+          "target_type": "scripts",
+          "type": "task",
+          "id": "c6yokp5",
+          "task_type": "approved"
+        },
+        {
+          "target_id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
+          "target_type": "scripts",
+          "type": "task",
+          "id": "k9kxrnc",
+          "task_type": "rejected"
         }
       ]
     },
@@ -135,8 +140,8 @@
       "title": "Purchase Request Rejection Notification",
       "is_initial": false,
       "workflow_position": [
-        804.0,
-        168.0
+        795.0,
+        165.0
       ],
       "transitions": []
     },
@@ -146,89 +151,13 @@
       "title": "Send Purchase Approved",
       "is_initial": false,
       "workflow_position": [
-        192.0,
-        36.0
+        210.0,
+        30.0
       ],
       "transitions": []
     }
   ],
-  "iterators": [
-    {
-      "id": "b4398762-4660-4936-973d-23c04b8bd3c9",
-      "title": "assignee_emails",
-      "variable_name": "assignee_emails",
-      "workflow_position": [
-        492.0,
-        -360.0
-      ],
-      "transitions": [
-        {
-          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
-          "target_type": "forms",
-          "type": "iterators:each",
-          "id": "5rvgrt7",
-          "condition_value": null
-        }
-      ],
-      "item_name": "item"
-    }
-  ],
-  "conditions": [
-    {
-      "id": "a3fc5f92-e752-4bb1-b930-4cb79910e67f",
-      "variable_name": "purchase_request_status",
-      "workflow_position": [
-        192.0,
-        -180.0
-      ],
-      "transitions": [
-        {
-          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
-          "target_type": "scripts",
-          "type": "conditions:patternMatched",
-          "id": "j3mdxlx",
-          "condition_value": "approved"
-        },
-        {
-          "target_id": "6ef24cf1-379f-4dbe-aa81-d0b6c30de86b",
-          "target_type": "forms",
-          "type": "conditions:patternMatched",
-          "id": "tpcrneq",
-          "condition_value": "pending_finance"
-        },
-        {
-          "target_id": "b4398762-4660-4936-973d-23c04b8bd3c9",
-          "target_type": "iterators",
-          "type": "conditions:patternMatched",
-          "id": "6ig9ljg",
-          "condition_value": "pending_manager"
-        }
-      ]
-    },
-    {
-      "id": "da57f30b-9f54-4d90-9494-f07697080758",
-      "variable_name": "approval_status",
-      "workflow_position": [
-        804.0,
-        36.0
-      ],
-      "transitions": [
-        {
-          "target_id": "146eb64e-6bc3-4eff-bdfd-653febde7f64",
-          "target_type": "scripts",
-          "type": "conditions:patternMatched",
-          "id": "kfjf0at",
-          "condition_value": "approved"
-        },
-        {
-          "target_id": "4b53edd1-f270-4a60-8608-1b4f923d2bad",
-          "target_type": "scripts",
-          "type": "conditions:patternMatched",
-          "id": "d0zqwyc",
-          "condition_value": "rejected"
-        }
-      ]
-    }
-  ],
-  "version": "11.0"
+  "agents": [],
+  "clients": [],
+  "version": "13.0"
 }

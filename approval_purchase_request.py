@@ -1,5 +1,5 @@
 from abstra.forms import *
-from abstra.workflows import *
+from abstra.tasks import *
 from abstra.tables import *
 
 
@@ -9,32 +9,43 @@ def team_info_by_email(email):
 
     return stm
 
+user = get_user()
+requester_email = user.email
 
-# verify if the requester is a valid user
-assignee_emails = get_data("assignee_emails")
-data = get_data(
-    "purchase_data")
-description = data["description"]
-amount = data["amount"]
-quantity = data["quantity"]
-reason = data["reason"]
-deadline = data["deadline"]
-requester_team_name = data["requester_team_name"]
-requester_team_id = data["requester_team_id"]
-requester_team_position = data["requester_team_position"]
-purchase_request_id = data["purchase_request_id"]
+tasks = get_tasks()
+for task in tasks:
+        
+    payload = task.get_payload()
+
+    assignee_emails = payload["assignee_emails"]
 
 
-purchase_request_status = get_data("purchase_request_status")
+    purchase_request_status = payload["purchase_request_status"]
+    purchase_data = payload["purchase_data"]
 
-assignee_emails = get_data("assignee_emails")
-approval_team_email = get_data("item")
-if approval_team_email == None:
-    approval_team_email = assignee_emails[0]
+    description = purchase_data["description"]
+    amount = purchase_data["amount"]
+    quantity = purchase_data["quantity"]
+    reason = purchase_data["reason"]
+    deadline = purchase_data["deadline"]
+    requester_team_name = purchase_data["requester_team_name"]
+    requester_team_id = purchase_data["requester_team_id"]
+    requester_team_position = purchase_data["requester_team_position"]
+    purchase_request_id = purchase_data["purchase_request_id"]
 
-# builds the purchase approval page
-approval_page = Page().display("Purchase Request Approval", size="large")\
-                      .display_markdown(
+    approval_team_id = team_info_by_email(requester_email)["id"]
+
+    # checks if the user is the responsible for the purchase request approval
+    if requester_email not in assignee_emails:
+        display("You are not the responsible for this purchase request approval. Please proceed or log in with the correct email.")
+        continue
+    elif select_one("purchase_request_approvals", where={"purchase_request_id": purchase_request_id, "team_id": approval_team_id})["approved"] is not None:
+        display("This purchase request has already been approved or rejected by you or your team. Please proceed or log in with the correct email.")
+        continue
+
+    # builds the purchase approval page
+    approval_page = Page().display("Purchase Request Approval", size="large")\
+                        .display_markdown(
     f"""
 
 You are requested to review the following purchase request and provide your decision regarding its approval. The details of the request are as follows:
@@ -50,21 +61,38 @@ You are requested to review the following purchase request and provide your deci
 3. **Timing**: Can the purchase wait, or is the deadline justified based on operational needs?
 4. **Compliance and Procurement**: Does the request comply with our procurement policy, including seeking at least three quotes for comparison?
 """
-)\
-    .run(actions=["Approve", "Reject"])
+    )\
+        .run(actions=["Approve", "Reject"])
 
 
-if approval_page.action == "Approve":
-    purchase_approved = True
-else:
-    purchase_approved = False
-    rejection_page = Page().display("Purchase Request Rejection", size="large")\
-                           .read_textarea("Reason for Rejection", key="rejection_reason")\
-                           .run("Send")
-    set_data("rejection_reason", rejection_page["rejection_reason"])
+    if approval_page.action == "Approve":
+        purchase_approved = True
+    else:
+        purchase_approved = False
+        rejection_page = Page().display("Purchase Request Rejection", size="large")\
+                            .read_textarea("Reason for Rejection", key="rejection_reason")\
+                            .run("Send")
+        payload.update({"rejection_reason": rejection_page["rejection_reason"]})
+
+    
+    update("purchase_request_approvals", set={"approved": purchase_approved}, 
+        where={"purchase_request_id": purchase_request_id, "team_id": approval_team_id})
 
 
-approval_team_id = team_info_by_email(approval_team_email)["id"]
+    # check if all approvals are done
+    assignee_team_ids = [team_info_by_email(email)["id"] for email in assignee_emails]
 
-update("purchase_request_approvals", set={"approved": purchase_approved}, 
-       where={"purchase_request_id": purchase_request_id, "team_id": approval_team_id})
+    approvals = []
+
+    for assignee_team_id in assignee_team_ids:
+        approvals.extend(
+            select("purchase_request_approvals", where={
+                                            "purchase_request_id": purchase_request_id, "team_id": assignee_team_id})
+        )
+    
+    if all(approval["approved"] == True for approval in approvals):
+        send_task("approval_status", payload)
+        task.complete()
+    elif any(approval["approved"] == False for approval in approvals):
+        send_task("approval_status", payload)
+        task.complete()

@@ -1,7 +1,11 @@
-from abstra.workflows import *
+from abstra.tasks import *
 from abstra.tables import *
 
-purchase_request_id = get_data("purchase_data")["purchase_request_id"]
+task = get_trigger_task()
+payload = task.get_payload()
+purchase_data = payload["purchase_data"]
+
+purchase_request_id = purchase_data["purchase_request_id"]
 
 purchase_request_approvals = select("purchase_request_approvals", where={
                                     "purchase_request_id": purchase_request_id})
@@ -16,14 +20,18 @@ if len(purchase_request_approvals) == 1:
 
 else:
 
-    if any([approval["approved"] is None for approval in purchase_request_approvals]):
-        approval_status = "pending"
+    # if any([approval["approved"] is None for approval in purchase_request_approvals]):
+    #   approval_status = "pending"
 
-    elif any([approval["approved"] == False for approval in purchase_request_approvals]):
+    if any([approval["approved"] == False for approval in purchase_request_approvals]):
         approval_status = "rejected"
 
     else:
         approval_status = "approved"
 
+condition_values = "approved,rejected".split(",")
+for condition_value in condition_values:
+    if approval_status == condition_value:
+        send_task(approval_status, payload)
+        task.complete()
 
-set_data("approval_status", approval_status)
